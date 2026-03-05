@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Не уходите — ваш промокод</title>
+    <style>
+      :root {
+        --bg: #f3f3f3;
+        --overlay: rgba(20, 20, 20, 0.6);
+        --panel: #ffffff;
+        --text: #111111;
+        --muted: #5a5a5a;
+        --line: #d9d9d9;
+        --dark: #1e1e1e;
+        --dark-hover: #000000;
+        --light-btn: #eeeeee;
+        --light-btn-hover: #e2e2e2;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Inter", "Segoe UI", Arial, sans-serif;
+        color: var(--text);
+        background: linear-gradient(150deg, #f7f7f7, #ebebeb);
+        display: grid;
+        place-items: center;
+      }
+
+      .open-popup-btn {
+        border: 1px solid #222;
+        border-radius: 10px;
+        padding: 14px 22px;
+        font-size: 15px;
+        font-weight: 600;
+        color: #fff;
+        background: var(--dark);
+        cursor: pointer;
+        transition: background 0.2s ease;
+      }
+
+      .open-popup-btn:hover {
+        background: var(--dark-hover);
+      }
+
+      .popup-overlay {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 14px;
+        background: var(--overlay);
+      }
+
+      .popup-overlay.active {
+        display: flex;
+      }
+
+      .popup {
+        width: min(100%, 470px);
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow: 0 14px 35px rgba(0, 0, 0, 0.17);
+        position: relative;
+      }
+
+      .icon-close {
+        position: absolute;
+        top: 10px;
+        right: 12px;
+        border: none;
+        background: transparent;
+        color: #717171;
+        font-size: 24px;
+        line-height: 1;
+        cursor: pointer;
+      }
+
+      .visuals {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .visual {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        border: 1px solid var(--line);
+        display: grid;
+        place-items: center;
+        background: #fafafa;
+      }
+
+      .visual svg {
+        width: 22px;
+        height: 22px;
+        stroke: #222;
+      }
+
+      .popup h2 {
+        margin: 0 0 8px;
+        font-size: 26px;
+      }
+
+      .popup p {
+        margin: 0 0 14px;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .promo-code {
+        border: 1px dashed #bdbdbd;
+        border-radius: 12px;
+        padding: 12px;
+        background: #fcfcfc;
+        margin-bottom: 12px;
+      }
+
+      .promo-label {
+        margin: 0 0 4px;
+        color: #6b6b6b;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+      }
+
+      .promo-text {
+        display: block;
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+      }
+
+      .actions {
+        display: grid;
+        gap: 8px;
+      }
+
+      .btn {
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 11px 14px;
+        border: 1px solid transparent;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .btn-copy {
+        background: var(--dark);
+        color: #fff;
+      }
+
+      .btn-copy:hover {
+        background: var(--dark-hover);
+      }
+
+      .btn-link {
+        background: var(--light-btn);
+        color: #111;
+        border-color: #d2d2d2;
+      }
+
+      .btn-link:hover {
+        background: var(--light-btn-hover);
+      }
+
+      .btn-close {
+        background: #fff;
+        color: #333;
+        border-color: #d8d8d8;
+      }
+
+      .btn-close:hover {
+        background: #f4f4f4;
+      }
+
+      .status {
+        min-height: 18px;
+        margin: 2px 0;
+        font-size: 13px;
+        color: #1f1f1f;
+      }
+    </style>
+  </head>
+  <body>
+    <button class="open-popup-btn" id="openPopup">Получить бонус</button>
+
+    <div class="popup-overlay" id="popupOverlay" aria-hidden="true">
+      <section class="popup" role="dialog" aria-modal="true" aria-labelledby="popupTitle">
+        <button class="icon-close" id="iconClose" aria-label="Закрыть">×</button>
+
+        <div class="visuals" aria-hidden="true">
+          <div class="visual">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6">
+              <rect x="7" y="3" width="10" height="5" rx="1"></rect>
+              <path d="M9 8h6"></path>
+              <path d="M6 8h12v11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2z"></path>
+            </svg>
+          </div>
+          <div class="visual">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6">
+              <path d="M12 4v16"></path>
+              <path d="M7 8h10"></path>
+              <path d="M8 20h8"></path>
+              <rect x="9" y="2" width="6" height="3" rx="1"></rect>
+            </svg>
+          </div>
+        </div>
+
+        <h2 id="popupTitle">Не уходите!</h2>
+        <p>Вот вам промокод на <strong>200%</strong> выгоды на избранные товары. Скопируйте его и переходите в каталог.</p>
+
+        <div class="promo-code">
+          <p class="promo-label">Ваш промокод</p>
+          <strong class="promo-text" id="promoText">WOW200</strong>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-copy" id="copyCode">Скопировать промокод</button>
+          <a class="btn btn-link" href="https://example.com/products" target="_blank" rel="noopener noreferrer">Перейти к товарам</a>
+          <button class="btn btn-close" id="closePopup">Закрыть</button>
+        </div>
+
+        <div class="status" id="copyStatus"></div>
+      </section>
+    </div>
+
+    <script>
+      const overlay = document.getElementById("popupOverlay");
+      const openPopup = document.getElementById("openPopup");
+      const closePopup = document.getElementById("closePopup");
+      const iconClose = document.getElementById("iconClose");
+      const copyCode = document.getElementById("copyCode");
+      const promoText = document.getElementById("promoText");
+      const copyStatus = document.getElementById("copyStatus");
+
+      function showPopup() {
+        overlay.classList.add("active");
+        overlay.setAttribute("aria-hidden", "false");
+      }
+
+      function hidePopup() {
+        overlay.classList.remove("active");
+        overlay.setAttribute("aria-hidden", "true");
+        copyStatus.textContent = "";
+      }
+
+      async function copyPromoCode() {
+        try {
+          await navigator.clipboard.writeText(promoText.textContent.trim());
+          copyStatus.textContent = "Промокод скопирован. Успейте применить его в корзине!";
+        } catch {
+          copyStatus.textContent = "Автокопирование недоступно. Скопируйте код вручную.";
+        }
+      }
+
+      openPopup.addEventListener("click", showPopup);
+      closePopup.addEventListener("click", hidePopup);
+      iconClose.addEventListener("click", hidePopup);
+      copyCode.addEventListener("click", copyPromoCode);
+
+      overlay.addEventListener("click", (event) => {
+        if (event.target === overlay) hidePopup();
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && overlay.classList.contains("active")) hidePopup();
+      });
+
+      showPopup();
+    </script>
+  </body>
+</html>
